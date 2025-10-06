@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<div class="grid">
+  <div class="card">
+    <h3>Users</h3>
+    <table style="width:100%;border-collapse:collapse">
+      <tr><th style="text-align:left">Username</th><th>Role</th><th>Created</th><th>Last login</th></tr>
+      {% for u in users %}
+      <tr>
+        <td>{{ u['username'] }}{% if u['email'] %} <span class="small">({{ u['email'] }})</span>{% endif %}</td>
+        <td style="text-align:center">{{ u['role'] }}</td>
+        <td class="small">{{ u['created_at'] }}</td>
+        <td class="small">{{ u['last_login_at'] or '-' }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>Latest Movies</h3>
+    <ul>
+      {% for m in movies %}
+      <li>{{ m['title'] }} <span class="small">({{ m['created_at'] }})</span></li>
+      {% else %}
+      <li class="small">No movies yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Recent Activity</h3>
+    <ul>
+      {% for l in logs %}
+      <li><span class="small">{{ l['created_at'] }}</span> — <strong>{{ l['username'] or 'user#' ~ l['user_id'] }}</strong> {{ l['action'] }} {% if l['meta'] %}<span class="small">{{ l['meta'] }}</span>{% endif %}</li>
+      {% else %}
+      <li class="small">No logs yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

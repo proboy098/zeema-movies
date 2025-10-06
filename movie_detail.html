@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="movie card">
+  <div class="poster">
+    {% if m['poster_filename'] %}
+      <img class="movie-poster" src="{{ url_for('static', filename='uploads/' ~ m['poster_filename']) }}" alt="{{ m['title'] }}">
+    {% else %}
+      <div class="movie-poster" style="display:flex;align-items:center;justify-content:center;opacity:.6">No Poster</div>
+    {% endif %}
+  </div>
+  <div class="info">
+    <h1>{{ m['title'] }}</h1>
+    <div class="small">{{ m['genre'] or '' }} {% if m['year'] %} • {{ m['year'] }}{% endif %}</div>
+    <p>{{ m['description'] }}</p>
+    {% if m['video_url'] %}
+      <p><a class="btn primary" href="{{ m['video_url'] }}" target="_blank">▶ Watch / Link</a></p>
+    {% endif %}
+    <div class="small">Added by {{ m['author'] or 'unknown' }} on {{ m['created_at'] }}</div>
+  </div>
+</div>
+{% endblock %}

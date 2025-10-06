@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Latest Movies</h1>
+<div class="grid">
+  {% for m in movies %}
+  <div class="card">
+    <a href="{{ url_for('movie_detail', movie_id=m['id']) }}">
+      {% if m['poster_filename'] %}
+        <img class="movie-poster" src="{{ url_for('static', filename='uploads/' ~ m['poster_filename']) }}" alt="{{ m['title'] }}">
+      {% else %}
+        <div class="movie-poster" style="display:flex;align-items:center;justify-content:center;opacity:.6">No Poster</div>
+      {% endif %}
+      <h3 style="margin:8px 0 4px">{{ m['title'] }}</h3>
+    </a>
+    <div class="small">{{ m['genre'] or '' }} {% if m['year'] %} • {{ m['year'] }}{% endif %}</div>
+  </div>
+  {% else %}
+  <div class="card">No movies yet. {% if current_user and current_user['role']=='admin' %}Use "Add Movie".{% endif %}</div>
+  {% endfor %}
+</div>
+{% endblock %}

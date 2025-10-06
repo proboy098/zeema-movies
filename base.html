@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title or 'Movies' }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav>
+    <div class="brand"><a href="{{ url_for('home') }}">🎬 Zeema Movies</a></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      {% if current_user %}
+        <span class="small">Hi, {{ current_user['username'] }}{% if current_user['role']=='admin' %} (admin){% endif %}</span>
+        {% if current_user['role']=='admin' %}
+          <a class="btn" href="{{ url_for('add_movie') }}">➕ Add Movie</a>
+          <a class="btn" href="{{ url_for('admin_dashboard') }}">🛡 Admin</a>
+        {% endif %}
+        <a class="btn danger" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="btn" href="{{ url_for('login') }}">Login</a>
+        <a class="btn primary" href="{{ url_for('register') }}">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat,msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <div class="small" style="margin-top:30px;opacity:.7">© {{ 2025 }} Zeema Movies</div>
+  </div>
+</body>
+</html>
